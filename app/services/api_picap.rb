@@ -41,6 +41,9 @@ class ApiPicap
 
     private
 
+    # Guarda los response de las peticiones
+    # Este metodo se encarga de crear y almacenar registros de log para las respuestas HTTP de la aplicación.
+
     def self.set_logs(response, type)
         log = Log.new(response: response.parsed_response, type_response: type)
         response.code > 199 && response.code < 300 ? log.success = true : log.success = false
