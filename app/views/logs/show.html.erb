@@ -1,0 +1,38 @@
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-9">
+      <h1 class="mb-4 text-primary">Details for Log: <small class="text-dark"><%= @log.id %></small></h1>
+    </div>
+    <div class="col-md-3">
+      <%= link_to "Back to Logs", logs_path, class: "btn btn-primary" %>
+    </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card my-3">
+        <div class="card-header"><h1 class="text-primary">Log Information</h1></div>
+        <div class="card-body">
+          <p><strong>ID:</strong> <%= @log.id %></p>
+          <p><strong>Response Status:</strong> <%= @log.success %></p>
+          <p><strong>Type Response:</strong> <%= get_type(@log.type_response) %></p>
+          <p><strong>Created At:</strong> <%= @log.created_at %></p>
+          <p><strong>Updated At:</strong> <%= @log.updated_at %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header"><h1 class="text-primary">Log Details</h1></div>
+
+        <div class="card-body">
+          <% if @log.response.nil? %>
+            <pre>{"mssg": "Unknown error."}</pre>
+          <% else %>
+            <pre><%= JSON.pretty_generate(@log.response) %></pre>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

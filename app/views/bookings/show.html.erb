@@ -1,0 +1,128 @@
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-9">
+      <h1 class="mb-4 text-primary">Details for Order: <small class="text-dark"><%= @booking['_id'] %></small></h1>
+    </div>
+    <div class="col-md-3">
+      <%= link_to "Back to Bookings", bookings_path, class: "btn btn-primary" %>
+    </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <h1 class="text-primary">Order Information</h1>
+      <div class="card my-3">
+        <div class="card-body">
+          <p><strong>ID:</strong> <%= @booking['_id'] %></p>
+          <p><strong>Created At:</strong> <%= @booking['created_at'] %></p>
+          <p><strong>Updated At:</strong> <%= @booking['updated_at'] %></p>
+          <p><strong>Address:</strong> <%= @booking['address'] %></p>
+          <% if @booking['secondary_address'].present? %>
+            <p><strong>Secondary Address:</strong> <%= @booking['secondary_address'] %></p>
+          <% end %>
+          <p><strong>Sender Phone:</strong> <%= @booking['sender_country_code'] %> <%= @booking['sender_phone'] %></p>
+          <% if @booking['origin_geojson'].present? %>
+            <p><strong>Origin Coordinates:</strong> <%= @booking['origin_geojson']["coordinates"].join(", ") %></p>
+          <% end %>
+          <p><strong>Requested Service Type:</strong> <%= @booking['requested_service_type_id'] %></p>
+          <p><strong>Status:</strong> <%= status_order(@booking['status_cd']) %></p>
+          <% if @booking['scheduled_at'].present? %>
+            <p><strong>Scheduled At:</strong> <%= @booking['scheduled_at'] %></p>
+          <% end %>
+          <p><strong>Return to Origin:</strong> <%= @booking['return_to_origin'] ? "Yes" : "No" %></p>
+          <% if @booking['trv_distance_str'].present? %>
+            <p><strong>Estimated Distance:</strong> <%= @booking['trv_distance_str'] %></p>
+          <% end %>
+          <% if @booking['estimated_traveled_distance'].present? %>
+            <p><strong>Estimated Traveled Distance:</strong> <%= @booking['estimated_traveled_distance'] %> km</p>
+          <% end %>
+          <% if @booking['final_cost'].present? %>
+            <p><strong>Final Cost:</strong> <%= number_to_currency(@booking['final_cost'], precision: 2) %></p>
+          <% end %>
+          <% if @booking['cost_center'].present? %>
+            <p><strong>Cost Center:</strong> <%= @booking['cost_center'] %></p>
+          <% end %>
+          <p><strong>Total Weight:</strong> <%= @booking['total_weight'] %> kg</p>
+          <% if @booking['use_wallet_balance'] %>
+            <p><strong>Use Wallet Balance:</strong> <%= @booking['use_wallet_balance'] %></p>
+          <% end %>
+          <% if @booking['requires_a_driver_with_base_money'] %>
+            <p><strong>Requires a Driver with Base Money:</strong> <%= @booking['requires_a_driver_with_base_money'] %></p>
+          <% end %>
+          <% if @booking['relaunched_to_id'].present? %>
+            <p><strong>Relaunched To:</strong> <%= @booking['relaunched_to_id'] %></p>
+          <% end %>
+          <% if @booking['customer_form_response'].present? %>
+            <p><strong>Customer Form Response:</strong> <%= @booking['customer_form_response'] %></p>
+          <% end %>
+          <% if @booking['estimated_cost'].present? %>
+            <p><strong>Estimated Cost:</strong> <%= number_to_currency(@booking['estimated_cost']['subunits'] / 100.0, unit: @booking['estimated_cost']['iso']) %></p>
+          <% end %>
+        </div>
+      </div>
+      <h1 class="text-primary">Stop Information</h1>
+      <% @booking['stops'].each do |stop| %>
+        <div class="card my-3">
+          <div class="card-body">
+            <p><strong>Address:</strong> <%= stop['address'] %></p>
+            <% if stop['secondary_address'].present? %>
+              <p><strong>Secondary Address:</strong> <%= stop['secondary_address'] %></p>
+            <% end %>
+            <% if stop['address_geojson'].present? %>
+              <p><strong>Address Coordinates:</strong> <%= stop['address_geojson']["coordinates"].join(", ") %></p>
+            <% end %>
+            <p><strong>Finished:</strong> <%= stop['finished'] %></p>
+            <p><strong>Is Return Stop:</strong> <%= stop['is_return_stop'] %></p>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+      <div class="">
+          <h1 class="text-primary">Packages</h1>
+          <% stop['packages'].each do |package| %>
+            <div class="card my-3">
+              <div class="card-body">
+                <p><strong>Package ID: </strong> <%= package['_id'] %></p>
+                <p><strong>Indications: </strong> <%= package['indications'] %></p>
+                <p><strong>Declared Value: </strong> <%= package['declared_value']['subunits'] %> <%= package['declared_value']['iso'] %></p>
+                <p><strong>Reference: </strong> <%= package['reference'] %></p>
+                <p><strong>Status Code: </strong> <%= status_package(package['status_cd']) %></p>
+                <p><strong>Size Code: </strong> <%= get_one_pack_sizes(package['size_cd']) %></p>
+                <p><strong>Tracking Link: </strong> <%= package['tracking_link'] %></p>
+                <p><strong>Picked Up Photo URL: </strong> <%= package['picked_up_photo_url'] %></p>
+                <p><strong>Delivered Photo URL: </strong> <%= package['delivered_photo_url'] %></p>
+                <p><strong>Not Received Reason Code: </strong> <%= package_not_received_reasons_substatus(package['not_received_reason_cd']) %></p>
+                <p><strong>Canceled Pickup Reason Code: </strong> <%= package['canceled_pickup_reason_cd'] %></p>
+                <p><strong>Has Retry Attempt: </strong> <%= package['has_retry_attempt'] %></p>
+                <p><strong>Relaunched To ID: </strong> <%= package['relaunched_to_id'] %></p>
+                <p><strong>Validation Code: </strong> <%= package['validation_code'] %></p>
+                <p><strong>Weight: </strong> <%= get_one_pack_sizes(package['weight']) %></p>
+              </div>
+            </div>
+          <% end %>
+          <% if stop['customer'].present? %>
+          <h1 class="text-primary">Customer</h1>
+            <div class="card my-3">
+              <div class="card-body">
+                <p><strong>Customer Name:</strong> <%= stop['customer']['name'] %></p>
+                <p><strong>Customer Email:</strong> <%= stop['customer']['email'] %></p>
+                <p><strong>Customer Phone:</strong> <%= stop['customer']['country_code'] %> <%= stop['customer']['phone'] %></p>
+                <p><strong>Fiscal Number:</strong> <%= stop["customer"]["fiscal_number"] %></p>
+              </div>
+            </div>
+          <% end %>
+          <% if stop['address_geojson'].present? %>
+          <h1 class="text-primary">Address Geojson</h1>
+              <div class="card my-3">
+                <div class="card-body">
+                  <p><strong>Longitude:</strong> <%= stop["address_geojson"]["coordinates"][0] %></p>
+                  <p><strong>Latitude:</strong> <%= stop["address_geojson"]["coordinates"][1] %></p>
+                </div>
+              </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

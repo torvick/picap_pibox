@@ -1,0 +1,41 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-9">
+      <h1 class="mb-4 text-primary">Logs </h1>
+    </div>
+    <div class="col-md-3">
+      <%= link_to "Bookings", bookings_path, class: "btn btn-primary" %>
+    </div>
+  <hr>
+<table class="table table-striped">
+  <thead>
+    <tr class="text-center">
+      <th>ID</th>
+      <th>Response Type</th>
+      <th>Status</th>
+      <th>Creation Date</th>
+      <th>Code</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @logs.each do |log| %>
+      <tr class="text-center">
+        <td><%= log.id %></td>
+        <td><%= get_type(log.type_response) %></td>
+        <td>
+          <% if log.success %>
+            <span class="text-success">Success</span>
+          <% else %>
+            <span class="text-danger">Error</span>
+          <% end %>
+        </td>
+        <td><%= log.created_at.strftime("%m/%d/%Y %H:%M:%S") %></td>
+        <td><%= get_code_response(log.code) %></td>
+        <td><%= link_to 'View', log_path(log), class: 'btn btn-primary' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+</div>

@@ -1,0 +1,43 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-9">
+      <h1 class="mb-4 text-primary">Bookings </h1>
+    </div>
+    <div class="col-md-3">
+      <%= link_to "Back to Logs", logs_path, class: "btn btn-primary" %>
+      <%= link_to "New Booking", new_booking_path, class: "btn btn-primary" %>
+    </div>
+  <hr>
+  
+  <table class="table table-striped">
+    <thead>
+      <tr class="text-center">
+        <th>ID</th>
+        <th>Created At</th>
+        <th>Address</th>
+        <th>Origin Coordinates</th>
+        <th>Requested Service Type</th>
+        <th>Status</th>
+        <th>Estimated Distance</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @bookings['data'].each do |d| %>
+        <tr class="text-center">
+          <td><%= d["_id"] %></td>
+          <td><%= d["created_at"] %></td>
+          <td><%= d["address"] %></td>
+          <td><%= d["origin_geojson"]["coordinates"].join(", ") %></td>
+          <td><%= d["requested_service_type_id"] %></td>
+          <td><%= status_order(d["status_cd"]) %></td>
+          <td><%= d["estimated_traveled_distance"] %></td>
+          <td>
+            <%= link_to "Ver", booking_path(d['_id']), class: "btn btn-primary btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
