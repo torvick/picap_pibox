@@ -8,12 +8,15 @@ class BookingsController < ApplicationController
         @booking = ApiPicap.post_bookings(build_request)
         respond_to do |format|
             if !@booking.nil?  &&  @booking['_id'].present?
+                # flash[:success] = "Bookings was successfully created."
                 format.html { redirect_to booking_path(@booking['_id']), notice: "Bookings was successfully created." }
                 format.json { render :show, status: :created, location: @booking }
             else
-                format.html { render :new, notice: "#{@booking}" }
+                # flash[:alert] = "#{@booking}"
+                format.html { redirect_to new_booking_path(), alert: "#{@booking ||= "unknown error"}" }
                 format.json { render json: @booking, status: :unprocessable_entity }
             end
+            
         end
     end
 

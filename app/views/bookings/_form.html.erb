@@ -1,13 +1,14 @@
 <%= form_with url: "/bookings", scope: :booking, method: :post, class: "form" do |form| %>
 
-  <div class="card container">
+  <div class="card">
+    <div class="card-header"><h2 class="text-primary">Detail</h2></div>
     <div class="card-body row">
     <div class="form-group col-md-12">
       <%= form.label :address, class: "form-label" %>
       <%= form.text_field :address, class: "form-control" %>
     </div>
 
-    <div class="form-group col-md-12">
+    <div class="form-group col-md-6">
       <%= form.label :secondary_address, class: "form-label" %>
       <%= form.text_field :secondary_address, class: "form-control" %>
     </div>
@@ -21,6 +22,8 @@
       <%= form.label :lon, class: "form-label" %>
       <%= form.text_field :lon, class: "form-control" %>
     </div>
+
+    <h3 class="text-primary mt-3 mb-3">Sender detail</h3>
 
     <div class="form-group col-3">
       <%= form.label :sender_phone, class: "form-label" %>
@@ -37,41 +40,47 @@
       <%= form.text_field :client_identification, class: "form-control" %>
     </div>
 
-    <div class="form-group col-6">
+    <h3 class="text-primary mt-3 mb-3">Services detail</h3>
+
+    <div class="form-group col-4">
       <%= form.label :requested_service_type_id, class: "form-label" %>
       <%= form.text_field :requested_service_type_id, class: "form-control" %>
     </div>
 
-    <div class="form-group col-6">
+    <div class="form-group col-4">
+      <%= form.label :scheduled_at, class: "form-label" %>
+      <%= form.text_field :scheduled_at, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-4">
+      <%= form.label :cost_center, class: "form-label" %>
+      <%= form.text_field :cost_center, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-12 mt-3">
       <div class="form-check">
         <%= form.check_box :return_to_origin, class: "form-check-input" %>
         <%= form.label :return_to_origin, class: "form-check-label" %>
       </div>
     </div>
 
-    <div class="form-group col-6">
+    <div class="form-group col-12 mt-3">
       <div class="form-check">
         <%= form.check_box :requires_a_driver_with_base_money, class: "form-check-input" %>
         <%= form.label :requires_a_driver_with_base_money, class: "form-check-label" %>
       </div>
     </div>
 
-    <div class="form-group col-6">
-      <%= form.label :scheduled_at, class: "form-label" %>
-      <%= form.text_field :scheduled_at, class: "form-control" %>
-    </div>
-
-    <div class="form-group col-6">
-      <%= form.label :cost_center, class: "form-label" %>
-      <%= form.text_field :cost_center, class: "form-control" %>
-    </div>
+    
     </div>
   </div>
-
+  
+  
   <%= form.fields_for :stops, index: 1, class: "form mt-3" do |stop_form| %>
-  <div class="card container mt-3">
+  <div class="card mt-3">
+    <div class="card-header"><h2 class="text-primary">Stop</h2></div>
     <div class="card-body row">
-    <div class="form-group col-6">
+    <div class="form-group col-12">
       <%= stop_form.label :address, class: "form-label" %>
       <%= stop_form.text_field :address, class: "form-control" %>
     </div>
@@ -91,6 +100,8 @@
       <%= stop_form.text_field :lon, class: "form-control" %>
     </div>
     <div class="col-12"></div>
+    
+    <h3 class="text-primary mt-3 mb-3">Customer detail</h3>
 
     <%= stop_form.fields_for :customer do |customer_form| %>
       <div class="form-group col-6">
@@ -98,12 +109,12 @@
         <%= customer_form.text_field :name, class: "form-control" %>
       </div>
 
-      <div class="form-group col-6">
+      <div class="form-group col-2">
         <%= customer_form.label :country_code, class: "form-label" %>
         <%= customer_form.text_field :country_code, class: "form-control" %>
       </div>
 
-      <div class="form-group col-6">
+      <div class="form-group col-4">
         <%= customer_form.label :phone, class: "form-label" %>
         <%= customer_form.text_field :phone, class: "form-control" %>
       </div>
@@ -112,7 +123,14 @@
         <%= customer_form.label :email, class: "form-label" %>
         <%= customer_form.text_field :email, class: "form-control" %>
       </div>
+
+      <div class="form-group col-6">
+        <%= customer_form.label :fiscal_number, class: "form-label" %>
+        <%= customer_form.text_field :fiscal_number, class: "form-control" %>
+      </div>
     <% end %>
+
+    <h3 class="text-primary mt-3 mb-3">Package detail</h3>
     
     <div class="col-12"></div>
      <%= stop_form.fields_for :packages, index: 1, class: "form mt-3" do |packages_form| %>
@@ -120,8 +138,25 @@
         <%= packages_form.label :indications, class: "form-label" %>
         <%= packages_form.text_field :indications, class: "form-control" %>
       </div>
+      <div class="form-group col-6">
+        <%= packages_form.label :reference, class: "form-label" %>
+        <%= packages_form.text_field :reference, class: "form-control" %>
+      </div>
+
+      <div class="form-group col-3">
+        <%= packages_form.label :size_cd, class: "form-label" %>
+        <%= packages_form.text_field :size_cd, class: "form-control" %>
+      </div>
+
+      <div class="form-group col-3 mt-5">
+        <%= packages_form.check_box :counter_delivery, class: "form-check-label" %>
+        <%= packages_form.label :counter_delivery, class: "form-label" %>
+      </div>
       
       <%= packages_form.fields_for :declared_value do |declared_value_form| %>
+        
+        <h3 class="text-primary mt-3 mb-3">Declared Value</h3>
+        
         <div class="form-group col-3">
           <%= declared_value_form.label :sub_units, class: "form-label" %>
           <%= declared_value_form.text_field :sub_units, class: "form-control" %>
@@ -132,24 +167,11 @@
           <%= declared_value_form.text_field :currency, class: "form-control" %>
         </div>
       <% end %>
-
-      <div class="form-group col-6">
-        <%= packages_form.label :reference, class: "form-label" %>
-        <%= packages_form.text_field :reference, class: "form-control" %>
-      </div>
-
-      <div class="form-group col-3">
-        <%= packages_form.check_box :counter_delivery, class: "form-check-label" %>
-        <%= packages_form.label :counter_delivery, class: "form-label" %>
-      </div>
-
-      <div class="form-group col-3">
-        <%= packages_form.label :size_cd, class: "form-label" %>
-        <%= packages_form.text_field :size_cd, class: "form-control" %>
-      </div>
     <% end %>
     </div>
     </div>
   <% end %>
-  <%= form.submit "Enviar", class: "btn btn-primary" %>
+  <div class="mt-3 container row justify-content-center mb-5">
+    <%= form.submit "Send", class: "btn btn-primary col-md-4" %>
+  </div>
 <% end %>
